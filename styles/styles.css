@@ -1,0 +1,128 @@
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.bounds {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 990px;
+  height: 990px;
+  background-color: blue;
+}
+
+.character {
+  position: relative;
+  height: 200px;
+}
+
+.character .shadow {
+  background-color: rgba(0, 0, 0, 0.11);
+  border-radius: 50%;
+  position: absolute;
+  bottom: -10px;
+  width: 120%;
+  height: 20px;
+  z-index: -10;
+}
+
+.bean {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: #f7f76e;
+  border-radius: 70px;
+  border: 5px solid black;
+}
+
+.bean .face {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 100%;
+  height: 20px;
+  top: 30%;
+  -webkit-transition: 1s;
+  transition: 1s;
+}
+
+.bean .face .eye {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.bean .face .eye:first-of-type {
+  margin-left: 10px;
+}
+
+.bean .mouth {
+  position: absolute;
+  width: 50%;
+  height: 20%;
+  left: 25%;
+  top: 30%;
+  border: solid 5px #000;
+  border-color: transparent transparent #000 transparent;
+  border-radius: 500%;
+}
+
+.walking {
+  -webkit-animation: infinite wobble 0.5s;
+          animation: infinite wobble 0.5s;
+}
+
+@-webkit-keyframes wobble {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+            transform: rotateZ(0deg);
+  }
+  25% {
+    -webkit-transform: rotateZ(-2.5deg);
+            transform: rotateZ(-2.5deg);
+  }
+  75% {
+    -webkit-transform: rotateZ(2.5deg);
+            transform: rotateZ(2.5deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(0deg);
+            transform: rotateZ(0deg);
+  }
+}
+
+@keyframes wobble {
+  0% {
+    -webkit-transform: rotateZ(0deg);
+            transform: rotateZ(0deg);
+  }
+  25% {
+    -webkit-transform: rotateZ(-2.5deg);
+            transform: rotateZ(-2.5deg);
+  }
+  75% {
+    -webkit-transform: rotateZ(2.5deg);
+            transform: rotateZ(2.5deg);
+  }
+  100% {
+    -webkit-transform: rotateZ(0deg);
+            transform: rotateZ(0deg);
+  }
+}
+/*# sourceMappingURL=styles.css.map */
