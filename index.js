@@ -86,6 +86,12 @@ function moveRandomly() {
   return [newX, newY];
 }
 
+function getDistanceBetween(x1, x2, y1, y2, r1, r2) {
+  const distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+  if (distance < r1 + r2) return true;
+  return false;
+}
+
 function gameLoop() {
   if (up) {
     y = y - 1;
@@ -131,7 +137,7 @@ class Bean {
     this.dom.style.height = this.height + "px";
     this.dom.innerHTML = `<div class="bean"  style='background :hsl(${
       Math.random() * 300
-    }, 45%, 70%)'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"></div></div><div class="shadow"></div>`;
+    }, 45%, 70%)'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"></div></div><div class="shadow"></div><div class="hitbox"></div>`;
     // setInterval(() => {
     //   [this.xDir, this.yDir] = moveRandomly();
     // }, Math.random() * 3000 + 2000);
@@ -152,14 +158,42 @@ class Bean {
 
     //Move to
     if (this.target === true) {
-      this.xTarget - this.x > 0 ? (this.xDir = 1) : (this.xDir = -1);
-      this.yTarget - this.y > 0 ? (this.yDir = 1) : (this.yDir = -1);
+      const xDiff = Math.abs(this.xTarget - this.x);
+      const yDiff = Math.abs(this.yTarget - this.y);
+      if (xDiff > yDiff) {
+        this.xDir = 1;
+        this.yDir = yDiff / xDiff;
+      }
+      if (yDiff > xDiff) {
+        this.yDir = 1;
+        this.xDir = xDiff / yDiff;
+      }
+      this.xTarget - this.x > 0 ? this.xDir : (this.xDir = -this.xDir);
+      this.yTarget - this.y > 0 ? this.yDir : (this.yDir = -this.yDir);
       if (this.xTarget === this.x) this.xDir = 0;
       if (this.yTarget === this.y) this.yDir = 0;
       if (this.xTarget === this.x && this.yTarget === this.y) {
         console.log("im here at ", this.x, this.y, this);
-        alert("he has arrived");
         this.target = false;
+      }
+      if (
+        getDistanceBetween(
+          this.x,
+          ball.offsetLeft + 50,
+          this.y,
+          ball.offsetTop + 50,
+          50,
+          50
+        ) === true
+      ) {
+        //this.yDir = Math.abs(this.y - ball.offsetTop);
+        if (Math.abs(this.xTarget - this.x) < this.yTarget - this.y) {
+          this.x < ball.offsetLeft + 50 ? (this.xDir = -1) : (this.xDir = 1);
+        } else if (Math.abs(this.xTarget - this.x) > this.yTarget - this.y) {
+          this.y < ball.offsetTop + 50 ? (this.yDir = -1) : (this.yDir = 1);
+        } else {
+          console.log("same");
+        }
       }
     }
     //walking animation
@@ -190,6 +224,10 @@ let characters = [player1];
 //     new Bean(160 + Math.random() * 100, 80 + Math.random() * 50, board)
 //   );
 //}
+
+const ball = document.createElement("div");
+ball.classList.add("ball");
+board.appendChild(ball);
 
 window.addEventListener("click", (e) => {
   player1.target = true;
