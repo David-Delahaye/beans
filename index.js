@@ -152,15 +152,15 @@ class Bean {
 
     //Move to
     if (this.target === true) {
-      console.log(this.xTarget, this.yTarget);
-      const yDiff = this.yTarget - this.y;
-      const xDiff = this.xTarget - this.x;
-      xDiff > 0 ? (this.xDir = 1) : (this.xDir = -1);
-      yDiff > 0 ? (this.yDir = 1) : (this.yDir = -1);
-      if (xDiff === 0) this.xDir = 0;
-      if (yDiff === 0) this.yDir = 0;
-      if (xDiff === 0 && yDiff === 0)
-        console.log("im here at ", this.x, this.y);
+      this.xTarget - this.x > 0 ? (this.xDir = 1) : (this.xDir = -1);
+      this.yTarget - this.y > 0 ? (this.yDir = 1) : (this.yDir = -1);
+      if (this.xTarget === this.x) this.xDir = 0;
+      if (this.yTarget === this.y) this.yDir = 0;
+      if (this.xTarget === this.x && this.yTarget === this.y) {
+        console.log("im here at ", this.x, this.y, this);
+        alert("he has arrived");
+        this.target = false;
+      }
     }
     //walking animation
     this.xDir !== 0 || this.yDir !== 0
@@ -194,8 +194,9 @@ let characters = [player1];
 window.addEventListener("click", (e) => {
   player1.target = true;
   console.log(e.screenX, e.screenY);
-  player1.xTarget = e.screenX;
-  player1.yTarget = e.screenY;
+  console.log(e);
+  player1.xTarget = e.offsetX;
+  player1.yTarget = e.offsetY;
 });
 
 window.requestAnimationFrame(gameLoop);
