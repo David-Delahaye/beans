@@ -89,7 +89,7 @@ function moveRandomly() {
 function getDistanceBetween(x1, x2, y1, y2, r1, r2) {
   const distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
   if (distance < r1 + r2) {
-    return true;
+    return distance;
   }
   return false;
 }
@@ -123,10 +123,12 @@ class Bean {
     this.y = y;
     this.xDir = 1;
     this.yDir = 1;
-    this.xTarget = 0;
-    this.yTarget = 0;
+    this.xTarget = Math.random() * 2000;
+    this.yTarget = Math.random() * 1000;
     this.target = true;
-    this.speed = 0.9;
+    this.direction = Math.random() - 0.5;
+    this.speed = Math.random() + 0.2;
+    this.maxSpeed = Math.random() + 1;
     this.board = board;
     this.dom = document.createElement("div");
     this.init();
@@ -147,13 +149,13 @@ class Bean {
     // setInterval(() => {
     //   [this.xDir, this.yDir] = moveRandomly();
     // }, Math.random() * 3000 + 2000);
-    setInterval(() => {
-      [this.xTarget, this.yTarget] = [
-        Math.random() * 2000,
-        Math.random() * 1000,
-      ];
-      this.target = true;
-    }, Math.random() * 10000 + 6000);
+    // setInterval(() => {
+    //   [this.xTarget, this.yTarget] = [
+    //     Math.random() * 2000,
+    //     Math.random() * 1000,
+    //   ];
+    //   this.target = true;
+    // }, Math.random() * 10000 + 6000);
 
     this.dom.onclick = () => {
       console.log(this);
@@ -162,24 +164,22 @@ class Bean {
 
   move() {
     //bounds check
-    if (this.x < 10) this.xDir = 1;
-    if (this.y < 10) this.yDir = 1;
-    if (this.y > 1000) this.yDir = -1;
-    if (this.x > 2000) this.xDir = -1;
-    this.x += this.xDir * this.speed;
-    this.y += this.yDir * this.speed;
+    if (this.x < 10) this.xDir += 1;
+    if (this.y < 10) this.yDir += 1;
+    if (this.y > 1000) this.yDir -= 1;
+    if (this.x > 2000) this.xDir -= 1;
 
     //Move to
     if (this.target === true) {
       const xDiff = Math.abs(this.xTarget - this.x);
       const yDiff = Math.abs(this.yTarget - this.y);
       if (xDiff > yDiff) {
-        this.xDir = 1;
-        this.yDir = yDiff / xDiff;
+        this.xDir += 1;
+        this.yDir += yDiff / xDiff;
       }
       if (yDiff > xDiff) {
-        this.yDir = 1;
-        this.xDir = xDiff / yDiff;
+        this.yDir += 1;
+        this.xDir += xDiff / yDiff;
       }
 
       this.xTarget - this.x > 0 ? this.xDir : (this.xDir = -this.xDir);
@@ -190,31 +190,72 @@ class Bean {
         console.log("im here at ", this.x, this.y, this);
         this.target = false;
       }
-      for (let i = 0; i < characters.length; i++) {
-        if (characters[i] === this) continue;
+    }
 
-        //collision
-        if (
-          getDistanceBetween(
-            this.x,
-            characters[i].x,
-            this.y,
-            characters[i].y,
-            30,
-            30
-          ) === true
-        ) {
-          let newX = 0;
-          let newY = 0;
-          if (this.x < characters[i].x) newX = this.x - 100;
-          if (this.x > characters[i].x) newX = this.x + 100;
-          if (this.y < characters[i].y) newY = this.y - 100;
-          if (this.y > characters[i].y) newY = this.y + 100;
-          this.xTarget = newX;
-          this.yTarget = newY;
+    //collisions
+
+    for (let i = 0; i < characters.length; i++) {
+      if (characters[i] === this) continue;
+
+      const distance = getDistanceBetween(
+        this.x,
+        characters[i].x,
+        this.y,
+        characters[i].y,
+        50,
+        50
+      );
+
+      //collision
+      if (distance !== false) {
+        const bounceXDiff = Math.abs(characters[i].x - this.x);
+        const bounceYDiff = Math.abs(characters[i].y - this.y);
+        if (bounceXDiff > bounceYDiff) {
+          this.xDir += 100 - distance;
+          this.yDir += bounceYDiff / bounceXDiff;
         }
+        if (bounceYDiff > bounceXDiff) {
+          this.yDir += 100 - distance;
+          this.xDir += bounceXDiff / bounceYDiff;
+        }
+
+        characters[i].x < this.x ? this.xDir : (this.xDir = -this.xDir);
+        characters[i].y < this.y ? this.yDir : (this.yDir = -this.yDir);
+
+        //   let newX = 0;
+        //   let newY = 0;
+        //   if (this.x < characters[i].x) newX = this.x - 100;
+        //   if (this.x > characters[i].x) newX = this.x + 100;
+        //   if (this.y < characters[i].y) newY = this.y - 100;
+        //   if (this.y > characters[i].y) newY = this.y + 100;
+        //   this.xTarget = newX;
+        //   this.yTarget = newY;
+        // var minX = Math.min.apply(Math, [this.x, this.xTarget]),
+        //   maxX = Math.max.apply(Math, [this.x, this.xTarget]);
+
+        // var minY = Math.min.apply(Math, [this.y, this.yTarget]),
+        //   maxY = Math.max.apply(Math, [this.y, this.yTarget]);
+
+        // if (
+        //   (characters[i].x < maxX && characters[i].x > minX) ||
+        //   (characters[i].y < maxY && characters[i].y > minY)
+        // ) {
+        //   let cx = characters[i].x;
+        //   let cy = characters[i].y;
+        //   var radians = Math.PI / 180,
+        //     cos = Math.cos(radians),
+        //     sin = Math.sin(radians),
+        //     nx = cos * (this.x - cx) + sin * (this.y - cy) + cx,
+        //     ny = cos * (this.y - cy) - sin * (this.x - cx) + cy;
+        //   this.x = nx;
+        //   this.y = ny;
+        // }
       }
     }
+
+    if (this.xDir > this.maxSpeed) this.xDir = this.maxSpeed;
+    if (this.yDir > this.maxSpeed) this.yDir = this.maxSpeed;
+
     //walking animation
     this.xDir !== 0 || this.yDir !== 0
       ? this.dom.firstChild.firstChild.classList.add("walking")
@@ -225,6 +266,8 @@ class Bean {
     } else if (this.xDir < 0) {
       this.dom.firstChild.firstChild.firstChild.style.marginLeft = -5 + "px";
     }
+    this.x += this.xDir * this.speed;
+    this.y += this.yDir * this.speed;
     this.render();
   }
 
@@ -244,7 +287,7 @@ const player1 = new Bean(
 );
 let characters = [player1];
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 10; i++) {
   characters.push(
     new Bean(Math.random() * 800, Math.random() * 800, 200, 100, board)
   );
