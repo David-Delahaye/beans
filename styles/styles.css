@@ -103,6 +103,11 @@ body {
           animation: infinite wobble 0.5s;
 }
 
+.jumping {
+  -webkit-animation: infinite jump 0.5s;
+          animation: infinite jump 0.5s;
+}
+
 @-webkit-keyframes wobble {
   0% {
     -webkit-transform: rotateZ(0deg);
@@ -139,5 +144,48 @@ body {
     -webkit-transform: rotateZ(0deg);
             transform: rotateZ(0deg);
   }
+}
+
+@-webkit-keyframes jump {
+  0% {
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+  50% {
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+  }
+  100% {
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+}
+
+@keyframes jump {
+  0% {
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+  50% {
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+  }
+  100% {
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+}
+
+button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 200px;
+  height: 100px;
+  background-color: green;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 26px;
+  z-index: 1000000;
 }
 /*# sourceMappingURL=styles.css.map */

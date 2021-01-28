@@ -258,11 +258,17 @@ class Bean {
 
     // this.xDir = this.Xorient * this.xDir;
     // this.yDir = this.yDir * this.Yorient;
-
     //walking animation
-    this.xDir !== 0 || this.yDir !== 0
-      ? this.dom.firstChild.firstChild.classList.add("walking")
-      : this.dom.firstChild.firstChild.classList.remove("walking");
+    if (this.xDir >= 3 || this.yDir >= 3) {
+      this.dom.firstChild.firstChild.classList.add("jumping");
+      this.dom.firstChild.firstChild.classList.remove("walking");
+    } else if (this.xDir !== 0 || this.yDir !== 0) {
+      this.dom.firstChild.firstChild.classList.add("walking");
+      this.dom.firstChild.firstChild.classList.remove("jumping");
+    } else {
+      this.dom.firstChild.firstChild.classList.remove("walking");
+      this.dom.firstChild.firstChild.classList.remove("jumping");
+    }
 
     if (this.xDir > 0) {
       this.dom.firstChild.firstChild.firstChild.style.marginLeft = 5 + "px";
@@ -301,23 +307,30 @@ const player1 = new Bean(
 );
 let characters = [player1];
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 5; i++) {
   characters.push(
-    new Bean(Math.random() * 800, Math.random() * 800, 200, 100, board)
+    new Bean(Math.random() * 2000, Math.random() * 1000, 200, 100, board)
   );
 }
 
-window.addEventListener("click", (e) => {
-  player1.target = true;
-  console.log(e.screenX, e.screenY);
-  console.log(e);
-  player1.xTarget = e.offsetX;
-  player1.yTarget = e.offsetY;
-  for (let i = 0; i < characters.length; i++) {
-    characters[i].xTarget = e.offsetX;
-    characters[i].yTarget = e.offsetY;
-    characters[i].target = true;
-  }
+// window.addEventListener("click", (e) => {
+//   player1.target = true;
+//   console.log(e.screenX, e.screenY);
+//   console.log(e);
+//   player1.xTarget = e.offsetX;
+//   player1.yTarget = e.offsetY;
+//   for (let i = 0; i < characters.length; i++) {
+//     characters[i].xTarget = e.offsetX;
+//     characters[i].yTarget = e.offsetY;
+//     characters[i].target = true;
+//   }
+// });
+
+const button = document.querySelector("button");
+button.addEventListener("click", () => {
+  characters.push(
+    new Bean(Math.random() * 2000, Math.random() * 1000, 200, 100, board)
+  );
 });
 
 window.requestAnimationFrame(gameLoop);

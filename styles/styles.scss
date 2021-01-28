@@ -100,6 +100,10 @@ body {
   animation: infinite wobble 0.5s;
 }
 
+.jumping {
+  animation: infinite jump 0.5s;
+}
+
 @keyframes wobble {
   0% {
     transform: rotateZ(0deg);
@@ -113,4 +117,29 @@ body {
   100% {
     transform: rotateZ(0deg);
   }
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 200px;
+  height: 100px;
+  background-color: green;
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 26px;
+  z-index: 1000000;
 }
