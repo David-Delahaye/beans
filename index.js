@@ -123,12 +123,17 @@ class Bean {
     this.y = y;
     this.xDir = 1;
     this.yDir = 1;
+    this.Xorient = 0;
+    this.Yorient = 0;
+    this.xVel = 0;
+    this.yVel = 0;
     this.xTarget = Math.random() * 2000;
     this.yTarget = Math.random() * 1000;
     this.target = true;
     this.direction = Math.random() - 0.5;
-    this.speed = Math.random() + 0.2;
-    this.maxSpeed = Math.random() + 1;
+    this.speed = Math.random() + 0.4;
+    this.velocity = 0;
+    this.maxSpeed = 1.4;
     this.board = board;
     this.dom = document.createElement("div");
     this.init();
@@ -149,51 +154,20 @@ class Bean {
     // setInterval(() => {
     //   [this.xDir, this.yDir] = moveRandomly();
     // }, Math.random() * 3000 + 2000);
-    // setInterval(() => {
-    //   [this.xTarget, this.yTarget] = [
-    //     Math.random() * 2000,
-    //     Math.random() * 1000,
-    //   ];
-    //   this.target = true;
-    // }, Math.random() * 10000 + 6000);
+    setInterval(() => {
+      [this.xTarget, this.yTarget] = [
+        Math.random() * 2000,
+        Math.random() * 1000,
+      ];
+      this.target = true;
+    }, 20000);
 
     this.dom.onclick = () => {
       console.log(this);
     };
   }
 
-  move() {
-    //bounds check
-    if (this.x < 10) this.xDir += 1;
-    if (this.y < 10) this.yDir += 1;
-    if (this.y > 1000) this.yDir -= 1;
-    if (this.x > 2000) this.xDir -= 1;
-
-    //Move to
-    if (this.target === true) {
-      const xDiff = Math.abs(this.xTarget - this.x);
-      const yDiff = Math.abs(this.yTarget - this.y);
-      if (xDiff > yDiff) {
-        this.xDir += 1;
-        this.yDir += yDiff / xDiff;
-      }
-      if (yDiff > xDiff) {
-        this.yDir += 1;
-        this.xDir += xDiff / yDiff;
-      }
-
-      this.xTarget - this.x > 0 ? this.xDir : (this.xDir = -this.xDir);
-      this.yTarget - this.y > 0 ? this.yDir : (this.yDir = -this.yDir);
-      if (xDiff < 1) this.xDir = 0;
-      if (yDiff < 1) this.yDir = 0;
-      if (xDiff < 1 && yDiff < 1) {
-        console.log("im here at ", this.x, this.y, this);
-        this.target = false;
-      }
-    }
-
-    //collisions
-
+  collision() {
     for (let i = 0; i < characters.length; i++) {
       if (characters[i] === this) continue;
 
@@ -210,17 +184,11 @@ class Bean {
       if (distance !== false) {
         const bounceXDiff = Math.abs(characters[i].x - this.x);
         const bounceYDiff = Math.abs(characters[i].y - this.y);
-        if (bounceXDiff > bounceYDiff) {
-          this.xDir += 100 - distance;
-          this.yDir += bounceYDiff / bounceXDiff;
-        }
-        if (bounceYDiff > bounceXDiff) {
-          this.yDir += 100 - distance;
-          this.xDir += bounceXDiff / bounceYDiff;
-        }
+        // this.xDir += 0.1;
+        // this.yDir += 0.1;
 
-        characters[i].x < this.x ? this.xDir : (this.xDir = -this.xDir);
-        characters[i].y < this.y ? this.yDir : (this.yDir = -this.yDir);
+        characters[i].x < this.x ? (this.xDir += 0.2) : (this.xDir -= 0.2);
+        characters[i].y < this.y ? (this.yDir += 0.2) : (this.yDir -= 0.2);
 
         //   let newX = 0;
         //   let newY = 0;
@@ -242,7 +210,7 @@ class Bean {
         // ) {
         //   let cx = characters[i].x;
         //   let cy = characters[i].y;
-        //   var radians = Math.PI / 180,
+        //   var radians = Math.PI / 360,
         //     cos = Math.cos(radians),
         //     sin = Math.sin(radians),
         //     nx = cos * (this.x - cx) + sin * (this.y - cy) + cx,
@@ -252,9 +220,44 @@ class Bean {
         // }
       }
     }
+  }
 
-    if (this.xDir > this.maxSpeed) this.xDir = this.maxSpeed;
-    if (this.yDir > this.maxSpeed) this.yDir = this.maxSpeed;
+  move() {
+    //bounds check
+    if (this.x < 10) this.xDir += 0.1;
+    if (this.y < 10) this.yDir += 0.1;
+    if (this.y > 1000) this.yDir -= 0.1;
+    if (this.x > 2000) this.xDir -= 0.1;
+
+    //Move to
+    if (this.target === true) {
+      const xDiff = Math.abs(this.xTarget - this.x);
+      const yDiff = Math.abs(this.yTarget - this.y);
+      // if (xDiff > yDiff) {
+      //   this.xDir += 0.1;
+      //   this.yDir += (yDiff / xDiff) * 0.1;
+      // }
+      // if (yDiff > xDiff) {
+      //   this.yDir += 0.1;
+      //   this.xDir += (xDiff / yDiff) * 0.1;
+      // }
+
+      this.xTarget < this.x ? (this.xDir -= 0.1) : (this.xDir += 0.1);
+      this.yTarget < this.y ? (this.yDir -= 0.1) : (this.yDir += 0.1);
+
+      if (xDiff < 20) this.xDir = 0;
+      if (yDiff < 20) this.yDir = 0;
+      if (xDiff < 20 && yDiff < 20) {
+        console.log("im here at ", this.x, this.y, this);
+        //this.target = false;
+      }
+    }
+
+    // if (Math.abs(this.xDir) > this.maxSpeed) this.xDir = this.maxSpeed;
+    // if (Math.abs(this.yDir) > this.maxSpeed) this.yDir = this.maxSpeed;
+
+    // this.xDir = this.Xorient * this.xDir;
+    // this.yDir = this.yDir * this.Yorient;
 
     //walking animation
     this.xDir !== 0 || this.yDir !== 0
@@ -266,6 +269,17 @@ class Bean {
     } else if (this.xDir < 0) {
       this.dom.firstChild.firstChild.firstChild.style.marginLeft = -5 + "px";
     }
+    this.collision();
+
+    //speed limit
+    if (
+      Math.abs(this.xDir) > this.maxSpeed ||
+      Math.abs(this.yDir) > this.maxSpeed
+    ) {
+      this.xDir *= 0.8;
+      this.yDir *= 0.8;
+    }
+
     this.x += this.xDir * this.speed;
     this.y += this.yDir * this.speed;
     this.render();
@@ -287,7 +301,7 @@ const player1 = new Bean(
 );
 let characters = [player1];
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 50; i++) {
   characters.push(
     new Bean(Math.random() * 800, Math.random() * 800, 200, 100, board)
   );
