@@ -108,6 +108,9 @@ function gameLoop() {
     x = x - 1;
   }
 
+  player1.xTarget = characters[1].x;
+  player1.yTarget = characters[1].y;
+
   characters.forEach((character) => {
     character.move();
   });
@@ -119,6 +122,7 @@ class Bean {
   constructor(x, y, height, width, board) {
     this.height = height;
     this.width = width;
+    this.radius = width / 2;
     this.x = x;
     this.y = y;
     this.xDir = 1;
@@ -176,8 +180,8 @@ class Bean {
         characters[i].x,
         this.y,
         characters[i].y,
-        50,
-        50
+        this.radius,
+        characters[i].radius
       );
 
       //collision
@@ -224,10 +228,10 @@ class Bean {
 
   move() {
     //bounds check
-    if (this.x < 10) this.xDir += 0.1;
-    if (this.y < 10) this.yDir += 0.1;
-    if (this.y > 1000) this.yDir -= 0.1;
-    if (this.x > 2000) this.xDir -= 0.1;
+    if (this.x < this.width) this.xDir += 0.1;
+    if (this.y < this.height) this.yDir += 0.1;
+    if (this.y > board.offsetHeight) this.yDir -= 0.1;
+    if (this.x > board.offsetWidth) this.xDir -= 0.1;
 
     //Move to
     if (this.target === true) {
@@ -245,10 +249,10 @@ class Bean {
       this.xTarget < this.x ? (this.xDir -= 0.1) : (this.xDir += 0.1);
       this.yTarget < this.y ? (this.yDir -= 0.1) : (this.yDir += 0.1);
 
-      if (xDiff < 20) this.xDir = 0;
-      if (yDiff < 20) this.yDir = 0;
-      if (xDiff < 20 && yDiff < 20) {
-        console.log("im here at ", this.x, this.y, this);
+      if (xDiff < this.radius + 50) this.xDir = 0;
+      if (yDiff < this.radius + 50) this.yDir = 0;
+      if (xDiff < this.radius + 50 && yDiff < this.radius + 50) {
+        //console.log("im here at ", this.x, this.y, this);
         //this.target = false;
       }
     }
@@ -294,42 +298,55 @@ class Bean {
   render() {
     this.dom.style.left = this.x + "px";
     this.dom.style.top = this.y + "px";
-    this.dom.style.zIndex = Math.floor(this.y + this.height);
+    this.dom.style.zIndex = Math.floor(this.y);
   }
 }
-const board = document.querySelector("body");
+const board = document.querySelector(".bounds");
+console.log(board.offsetWidth);
 const player1 = new Bean(
-  Math.random() * 1000,
-  Math.random() * 1000,
-  200,
-  100,
+  Math.random() * board.offsetWidth,
+  Math.random() * board.offsetHeight,
+  Math.random() * 200 + 100,
+  Math.random() * 100 + 50,
   board
 );
 let characters = [player1];
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 1; i++) {
   characters.push(
-    new Bean(Math.random() * 2000, Math.random() * 1000, 200, 100, board)
+    new Bean(
+      Math.random() * board.offsetWidth,
+      Math.random() * board.offsetHeight,
+      Math.random() * 100 + 100,
+      Math.random() * 50 + 50,
+      board
+    )
   );
 }
 
-// window.addEventListener("click", (e) => {
-//   player1.target = true;
-//   console.log(e.screenX, e.screenY);
-//   console.log(e);
-//   player1.xTarget = e.offsetX;
-//   player1.yTarget = e.offsetY;
-//   for (let i = 0; i < characters.length; i++) {
-//     characters[i].xTarget = e.offsetX;
-//     characters[i].yTarget = e.offsetY;
-//     characters[i].target = true;
-//   }
-// });
+window.addEventListener("mousemove", (e) => {
+  player1.target = true;
+  console.log(e.screenX, e.screenY);
+  console.log(e);
+  player1.xTarget = e.offsetX;
+  player1.yTarget = e.offsetY;
+  for (let i = 0; i < characters.length; i++) {
+    characters[i].xTarget = e.offsetX;
+    characters[i].yTarget = e.offsetY;
+    characters[i].target = true;
+  }
+});
 
 const button = document.querySelector("button");
 button.addEventListener("click", () => {
   characters.push(
-    new Bean(Math.random() * 2000, Math.random() * 1000, 200, 100, board)
+    new Bean(
+      Math.random() * board.offsetWidth,
+      Math.random() * board.offsetHeight,
+      Math.random() * 100 + 100,
+      Math.random() * 50 + 50,
+      board
+    )
   );
 });
 
