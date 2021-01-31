@@ -108,9 +108,6 @@ function gameLoop() {
     x = x - 1;
   }
 
-  player1.xTarget = characters[1].x;
-  player1.yTarget = characters[1].y;
-
   characters.forEach((character) => {
     character.move();
   });
@@ -151,7 +148,7 @@ class Bean {
     this.dom.style.height = this.height + "px";
     this.dom.style.left = this.x + "px";
     this.dom.style.top = this.y + "px";
-    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"></div></div><div class="shadow"></div><div class="hitbox"></div></div>`;
+    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"><path d="M132,242 C120,387 303,394 307,237" /></div></div><div class="shadow"></div><div class="hitbox"></div></div>`;
     // setInterval(() => {
     //   [this.xDir, this.yDir] = moveRandomly();
     // }, Math.random() * 3000 + 2000);
@@ -300,15 +297,8 @@ class Bean {
 }
 const board = document.querySelector(".bounds");
 console.log(board.offsetWidth);
-const player1 = new Bean(
-  Math.random() * board.offsetWidth,
-  Math.random() * board.offsetHeight,
-  Math.random() * 200 + 100,
-  Math.random() * 100 + 50,
-  board,
-  "#000000"
-);
-let characters = [player1];
+
+let characters = [];
 
 for (let i = 0; i < 1; i++) {
   characters.push(
@@ -318,23 +308,20 @@ for (let i = 0; i < 1; i++) {
       Math.random() * 100 + 100,
       Math.random() * 50 + 50,
       board,
-      "#000000"
+      "#ffffff"
     )
   );
 }
 
-window.addEventListener("mousemove", (e) => {
-  player1.target = true;
-  // console.log(e.screenX, e.screenY);
-  // console.log(e);
-  player1.xTarget = e.offsetX;
-  player1.yTarget = e.offsetY;
-  for (let i = 0; i < characters.length; i++) {
-    characters[i].xTarget = e.offsetX;
-    characters[i].yTarget = e.offsetY;
-    characters[i].target = true;
-  }
-});
+// window.addEventListener("mousemove", (e) => {
+//   // console.log(e.screenX, e.screenY);
+//   // console.log(e);
+//   for (let i = 0; i < characters.length; i++) {
+//     characters[i].xTarget = e.offsetX;
+//     characters[i].yTarget = e.offsetY;
+//     characters[i].target = true;
+//   }
+// });
 
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
@@ -351,6 +338,29 @@ form.addEventListener("submit", (e) => {
       e.target.color.value
     )
   );
+});
+
+const test = new Bean(board.offsetWidth - 100, 350, 200, 100, board, "#ffffff");
+
+const colorPicker = document.querySelector("#color");
+colorPicker.addEventListener("input", (e) => {
+  console.log(e.target.value);
+  test.color = e.target.value;
+  test.init();
+});
+
+const heightPicker = document.querySelector("#height");
+heightPicker.addEventListener("input", (e) => {
+  console.log(e.target.value);
+  test.height = e.target.value;
+  test.init();
+});
+
+const widthPicker = document.querySelector("#width");
+widthPicker.addEventListener("input", (e) => {
+  console.log(e.target.value);
+  test.width = e.target.value;
+  test.init();
 });
 
 window.requestAnimationFrame(gameLoop);

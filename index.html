@@ -9,9 +9,23 @@
   <body>
     <div class="bounds"></div>
     <form>
-      <input type="number" placeholder="width" name="width" />
-      <input type="number" placeholder="height" name="height" />
-      <input type="color" placeholder="color" name="color" />
+      <input
+        type="range"
+        min="50"
+        max="300"
+        placeholder="width"
+        name="width"
+        id="width"
+      />
+      <input
+        type="range"
+        min="50"
+        max="300"
+        placeholder="height"
+        name="height"
+        id="height"
+      />
+      <input type="color" placeholder="color" id="color" name="color" />
       <button>+ Add a new Bean</button>
     </form>
     <script src="./index.js"></script>

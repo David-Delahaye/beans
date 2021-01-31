@@ -62,7 +62,7 @@ body {
   width: 100%;
   position: relative;
   background-color: #f7f76e;
-  border-radius: 70px;
+  border-radius: 7000px;
   border: 5px solid black;
   -webkit-transition: 1s;
   transition: 1s;
@@ -91,13 +91,15 @@ body {
 
 .character .bean .mouth {
   position: absolute;
-  width: 50%;
-  height: 20%;
-  left: 25%;
-  top: 30%;
+  width: 20px;
+  height: 20px;
+  top: 35%;
+  left: 40%;
   border: solid 5px #000;
-  border-color: transparent transparent #000 transparent;
-  border-radius: 500%;
+  border-color: transparent #000 #000 transparent;
+  border-radius: 50%;
+  -webkit-transform: rotateZ(45deg);
+          transform: rotateZ(45deg);
 }
 
 .walking {
