@@ -119,7 +119,7 @@ function gameLoop() {
 }
 
 class Bean {
-  constructor(x, y, height, width, board) {
+  constructor(x, y, height, width, board, color) {
     this.height = height;
     this.width = width;
     this.radius = width / 2;
@@ -133,6 +133,7 @@ class Bean {
     this.yVel = 0;
     this.xTarget = Math.random() * 2000;
     this.yTarget = Math.random() * 1000;
+    this.color = color;
     this.target = true;
     this.direction = Math.random() - 0.5;
     this.speed = Math.random() + 0.4;
@@ -150,11 +151,7 @@ class Bean {
     this.dom.style.height = this.height + "px";
     this.dom.style.left = this.x + "px";
     this.dom.style.top = this.y + "px";
-    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :hsl(${
-      Math.random() * 300
-    }, 85%, 75%); width:${this.width}px; height:${
-      this.height
-    }px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"></div></div><div class="shadow"></div><div class="hitbox"></div></div>`;
+    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"></div></div><div class="shadow"></div><div class="hitbox"></div></div>`;
     // setInterval(() => {
     //   [this.xDir, this.yDir] = moveRandomly();
     // }, Math.random() * 3000 + 2000);
@@ -308,7 +305,8 @@ const player1 = new Bean(
   Math.random() * board.offsetHeight,
   Math.random() * 200 + 100,
   Math.random() * 100 + 50,
-  board
+  board,
+  "#000000"
 );
 let characters = [player1];
 
@@ -319,15 +317,16 @@ for (let i = 0; i < 1; i++) {
       Math.random() * board.offsetHeight,
       Math.random() * 100 + 100,
       Math.random() * 50 + 50,
-      board
+      board,
+      "#000000"
     )
   );
 }
 
 window.addEventListener("mousemove", (e) => {
   player1.target = true;
-  console.log(e.screenX, e.screenY);
-  console.log(e);
+  // console.log(e.screenX, e.screenY);
+  // console.log(e);
   player1.xTarget = e.offsetX;
   player1.yTarget = e.offsetY;
   for (let i = 0; i < characters.length; i++) {
@@ -337,15 +336,19 @@ window.addEventListener("mousemove", (e) => {
   }
 });
 
-const button = document.querySelector("button");
-button.addEventListener("click", () => {
+const form = document.querySelector("form");
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  console.log(e.target.color.value);
+  console.log("hi");
   characters.push(
     new Bean(
       Math.random() * board.offsetWidth,
       Math.random() * board.offsetHeight,
-      Math.random() * 100 + 100,
-      Math.random() * 50 + 50,
-      board
+      e.target.height.value,
+      e.target.width.value,
+      board,
+      e.target.color.value
     )
   );
 });
