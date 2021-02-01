@@ -340,7 +340,13 @@ form.addEventListener("submit", (e) => {
   );
 });
 
-const test = new Bean(board.offsetWidth - 100, 350, 200, 100, board, "#ffffff");
+const formCloser = document.querySelector(".form-closer");
+formCloser.addEventListener("click", (e) => {
+  form.classList.toggle("hidden");
+  test.dom.classList.toggle("hidden");
+});
+
+const test = new Bean(board.offsetWidth - 100, 550, 200, 100, board, "#ffffff");
 
 const colorPicker = document.querySelector("#color");
 colorPicker.addEventListener("input", (e) => {
