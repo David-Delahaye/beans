@@ -9,30 +9,35 @@
   <body>
     <div class="bounds"></div>
     <form id="form">
+      <div class="form-body">
+        <h1>Add a new bean</h1>
+        <label for="width">Width</label>
+        <input
+          type="range"
+          min="50"
+          max="300"
+          placeholder="width"
+          name="width"
+          id="width"
+        />
+        <label for="height">Height</label>
+        <input
+          type="range"
+          min="50"
+          max="300"
+          placeholder="height"
+          name="height"
+          id="height"
+        />
+        <input type="color" placeholder="color" id="color" name="color" />
+        <button>+ Add a new Bean</button>
+      </div>
       <div class="form-closer">X</div>
       <div id="form-head"></div>
-      <h1>Add a new bean</h1>
-      <label for="width">Width</label>
-      <input
-        type="range"
-        min="50"
-        max="300"
-        placeholder="width"
-        name="width"
-        id="width"
-      />
-      <label for="height">Height</label>
-      <input
-        type="range"
-        min="50"
-        max="300"
-        placeholder="height"
-        name="height"
-        id="height"
-      />
-      <input type="color" placeholder="color" id="color" name="color" />
-      <button>+ Add a new Bean</button>
     </form>
+    <script src="./bean.js"></script>
+
     <script src="./index.js"></script>
+    <script src="./tab.js"></script>
   </body>
 </html>
