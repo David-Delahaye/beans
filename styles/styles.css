@@ -180,7 +180,7 @@ body {
   }
 }
 
-form {
+#form {
   position: absolute;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -205,12 +205,12 @@ form {
   z-index: 1000;
 }
 
-form .form-body {
+#form .form-body {
   position: relative;
 }
 
-form #form-head {
-  width: 100%;
+#form #form-head {
+  width: 100px;
   height: 100px;
   background-color: blue;
   z-index: 10001;
@@ -225,6 +225,6 @@ form #form-head {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 /*# sourceMappingURL=styles.css.map */

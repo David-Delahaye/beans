@@ -1,48 +1,90 @@
-const form = document.querySelector("form");
+class Tab {
+  constructor(parent) {
+    this.parent = parent;
+    this.dom = document.createElement("div");
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  console.log(e.target.color.value);
-  console.log("hi");
-  characters.push(
-    new Bean(
-      Math.random() * board.offsetWidth,
-      Math.random() * board.offsetHeight,
-      e.target.height.value,
-      e.target.width.value,
-      board,
-      e.target.color.value
-    )
-  );
-});
+    this.init();
+    this.header = this.dom.querySelector("#form-head");
+    this.body = this.dom.querySelector(".form-body");
 
-const formCloser = document.querySelector(".form-closer");
-formCloser.addEventListener("click", (e) => {
-  form.classList.toggle("hidden");
-  test.dom.classList.toggle("hidden");
-});
+    this.test = new Bean(100, 100, 200, 100, this.body, "#ffffff");
 
-const test = new Bean(100, 100, 200, 100, form, "#ffffff");
+    this.formCloser = this.dom.querySelector(".form-closer");
+    this.formCloser.addEventListener("click", (e) => {
+      this.body.classList.toggle("hidden");
+    });
 
-const colorPicker = document.querySelector("#color");
-colorPicker.addEventListener("input", (e) => {
-  test.color = e.target.value;
-  test.init();
-});
+    this.colorPicker = this.dom.querySelector("#color");
+    this.colorPicker.addEventListener("input", (e) => {
+      this.test.color = e.target.value;
+      this.test.init();
+    });
 
-const heightPicker = document.querySelector("#height");
-heightPicker.addEventListener("input", (e) => {
-  test.height = e.target.value;
-  test.init();
-});
+    this.heightPicker = this.dom.querySelector("#height");
+    this.heightPicker.addEventListener("input", (e) => {
+      this.test.height = e.target.value;
+      this.test.init();
+    });
 
-const widthPicker = document.querySelector("#width");
-widthPicker.addEventListener("input", (e) => {
-  test.width = e.target.value;
-  test.init();
-});
+    this.widthPicker = this.dom.querySelector("#width");
+    this.widthPicker.addEventListener("input", (e) => {
+      this.test.width = e.target.value;
+      this.test.init();
+    });
+  }
 
-dragElement(document.getElementById("form"));
+  init() {
+    this.parent.appendChild(this.dom);
+    this.dom.id = "form";
+    this.dom.innerHTML = `
+    <div class="form-closer">X</div>
+    <div id="form-head"></div>
+    <form>
+        <div class="form-body">
+        
+          <h1>Add a new bean</h1>
+          <label for="width">Width</label>
+          <input
+            type="range"
+            min="50"
+            max="300"
+            placeholder="width"
+            name="width"
+            id="width"
+          />
+          <label for="height">Height</label>
+          <input
+            type="range"
+            min="50"
+            max="300"
+            placeholder="height"
+            name="height"
+            id="height"
+          />
+          <input type="color" placeholder="color" id="color" name="color" />
+          <button>+ Add a new Bean</button>
+        </div>
+      </form>`;
+    this.dom.addEventListener("submit", (e) => {
+      e.preventDefault();
+      console.log(e.target.color.value);
+      console.log("hi");
+      characters.push(
+        new Bean(
+          Math.random() * board.offsetWidth,
+          Math.random() * board.offsetHeight,
+          e.target.height.value,
+          e.target.width.value,
+          board,
+          e.target.color.value
+        )
+      );
+    });
+    dragElement(this.dom);
+  }
+}
+
+const form = new Tab(document.querySelector("body"));
 
 function dragElement(elmnt) {
   var pos1 = 0,
@@ -58,6 +100,7 @@ function dragElement(elmnt) {
   }
 
   function dragMouseDown(e) {
+    console.log("happening");
     e = e || window.event;
     e.preventDefault();
     // get the mouse cursor position at startup:
@@ -86,5 +129,4 @@ function dragElement(elmnt) {
     document.onmouseup = null;
     document.onmousemove = null;
   }
-  test.init();
 }

@@ -133,7 +133,7 @@ body {
   }
 }
 
-form {
+#form {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -151,7 +151,7 @@ form {
     position: relative;
   }
   #form-head {
-    width: 100%;
+    width: 100px;
     height: 100px;
     background-color: blue;
     z-index: 10001;
@@ -167,5 +167,5 @@ form {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
