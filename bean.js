@@ -1,5 +1,8 @@
+const names = ["john", "steve", "alan"];
+
 class Bean {
   constructor(x, y, height, width, board, color) {
+    this.name = names[Math.floor(Math.random() * 3)];
     this.height = height;
     this.width = width;
     this.radius = width / 2;
@@ -22,6 +25,10 @@ class Bean {
     this.board = board;
     this.dom = document.createElement("div");
     this.init();
+    this.notes = this.dom.querySelector(".notes");
+    this.notes.innerHTML = `<h1>Name:${this.name}</h1><p>Height:${Math.floor(
+      this.height
+    )}</p>`;
   }
 
   init() {
@@ -31,10 +38,8 @@ class Bean {
     this.dom.style.height = this.height + "px";
     this.dom.style.left = this.x + "px";
     this.dom.style.top = this.y + "px";
-    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"><path d="M132,242 C120,387 303,394 307,237" /></div></div><div class="shadow"></div><div class="hitbox"></div></div>`;
-    // setInterval(() => {
-    //   [this.xDir, this.yDir] = moveRandomly();
-    // }, Math.random() * 3000 + 2000);
+    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"><path d="M132,242 C120,387 303,394 307,237" /></div></div><div class="shadow"></div><div class="hitbox"></div></div><div class="notes hidden"></div>`;
+
     setInterval(() => {
       [this.xTarget, this.yTarget] = [
         Math.random() * 2000,
@@ -43,8 +48,12 @@ class Bean {
       this.target = true;
     }, 20000);
 
-    this.dom.onclick = () => {
-      console.log(this);
+    this.dom.onmouseover = () => {
+      this.notes.classList.toggle("hidden");
+    };
+
+    this.dom.onmouseout = () => {
+      this.notes.classList.toggle("hidden");
     };
   }
 
@@ -93,7 +102,7 @@ class Bean {
       if (yDiff < this.radius + 50) this.yDir = 0;
       if (xDiff < this.radius + 50 && yDiff < this.radius + 50) {
         //console.log("im here at ", this.x, this.y, this);
-        //this.target = false;
+        this.target = false;
       }
     }
 

@@ -6,8 +6,16 @@ class Tab {
     this.init();
     this.header = this.dom.querySelector("#form-head");
     this.body = this.dom.querySelector(".form-body");
+    this.sample = this.dom.querySelector(".form-sample");
 
-    this.test = new Bean(100, 100, 200, 100, this.body, "#ffffff");
+    this.test = new Bean(
+      this.sample.clientWidth / 2,
+      this.sample.clientHeight - 50,
+      200,
+      100,
+      this.sample,
+      "#ffffff"
+    );
 
     this.formCloser = this.dom.querySelector(".form-closer");
     this.formCloser.addEventListener("click", (e) => {
@@ -37,8 +45,7 @@ class Tab {
     this.parent.appendChild(this.dom);
     this.dom.id = "form";
     this.dom.innerHTML = `
-    <div class="form-closer">X</div>
-    <div id="form-head"></div>
+    <div id="form-head">    <div class="form-closer">X</div></div>
     <form>
         <div class="form-body">
         
@@ -61,8 +68,11 @@ class Tab {
             name="height"
             id="height"
           />
+          <label for="color">Colour</label>
           <input type="color" placeholder="color" id="color" name="color" />
           <button>+ Add a new Bean</button>
+          <div class='form-sample'>
+          </div
         </div>
       </form>`;
     this.dom.addEventListener("submit", (e) => {
