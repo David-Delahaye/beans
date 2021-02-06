@@ -71,6 +71,17 @@ body {
     border-radius: 7000px;
     border: 5px solid black;
     transition: 1s;
+
+    .texture {
+      width: 100%;
+      height: 100%;
+      background-image: url("https://thumbs.dreamstime.com/b/knitting-realistic-texture-seamless-pattern-white-gray-knit-knitted-background-vector-143357327.jpg");
+      object-fit: cover;
+      object-position: center;
+      mix-blend-mode: darken;
+      border-radius: 7000px;
+      opacity: 0.1;
+    }
     .face {
       position: absolute;
       display: flex;

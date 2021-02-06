@@ -70,6 +70,19 @@ body {
   transition: 1s;
 }
 
+.character .bean .texture {
+  width: 100%;
+  height: 100%;
+  background-image: url("https://thumbs.dreamstime.com/b/knitting-realistic-texture-seamless-pattern-white-gray-knit-knitted-background-vector-143357327.jpg");
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  mix-blend-mode: darken;
+  border-radius: 7000px;
+  opacity: 0.1;
+}
+
 .character .bean .face {
   position: absolute;
   display: -webkit-box;

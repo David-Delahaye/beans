@@ -25,6 +25,7 @@ class Bean {
     this.board = board;
     this.dom = document.createElement("div");
     this.init();
+    this.face = this.dom.querySelector(".face");
     this.notes = this.dom.querySelector(".notes");
     this.notes.innerHTML = `<h1>Name:${this.name}</h1><p>Height:${Math.floor(
       this.height
@@ -38,7 +39,7 @@ class Bean {
     this.dom.style.height = this.height + "px";
     this.dom.style.left = this.x + "px";
     this.dom.style.top = this.y + "px";
-    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"><path d="M132,242 C120,387 303,394 307,237" /></div></div><div class="shadow"></div><div class="hitbox"></div></div><div class="notes hidden"></div>`;
+    this.dom.innerHTML = `<div class='body'><div class="bean"  style='background :${this.color}; width:${this.width}px; height:${this.height}px'><div class='texture'></div><div class="face"><div class="eye"></div><div class="eye"></div></div><div class="mouth"><path d="M132,242 C120,387 303,394 307,237" /></div></div><div class="shadow"></div><div class="hitbox"></div></div><div class="notes hidden"></div>`;
 
     setInterval(() => {
       [this.xTarget, this.yTarget] = [
@@ -98,11 +99,11 @@ class Bean {
       this.xTarget < this.x ? (this.xDir -= 0.1) : (this.xDir += 0.1);
       this.yTarget < this.y ? (this.yDir -= 0.1) : (this.yDir += 0.1);
 
-      if (xDiff < this.radius + 50) this.xDir = 0;
-      if (yDiff < this.radius + 50) this.yDir = 0;
-      if (xDiff < this.radius + 50 && yDiff < this.radius + 50) {
+      if (xDiff < this.radius) this.xDir = 0;
+      if (yDiff < this.radius) this.yDir = 0;
+      if (xDiff < this.radius && yDiff < this.radius) {
         //console.log("im here at ", this.x, this.y, this);
-        this.target = false;
+        //this.target = false;
       }
     }
 
@@ -119,9 +120,9 @@ class Bean {
     }
 
     if (this.xDir > 0) {
-      this.dom.firstChild.firstChild.firstChild.style.marginLeft = 5 + "px";
+      this.face.style.marginLeft = 5 + "px";
     } else if (this.xDir < 0) {
-      this.dom.firstChild.firstChild.firstChild.style.marginLeft = -5 + "px";
+      this.face.style.marginLeft = -5 + "px";
     }
     this.collision();
 
@@ -137,6 +138,11 @@ class Bean {
     this.x += this.xDir * this.speed;
     this.y += this.yDir * this.speed;
     this.render();
+  }
+
+  moveTo(x, y) {
+    this.xTarget = x;
+    this.yTarget = y;
   }
 
   render() {

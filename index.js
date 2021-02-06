@@ -7,9 +7,19 @@ function getDistanceBetween(x1, x2, y1, y2, r1, r2) {
 }
 
 function gameLoop() {
-  characters.forEach((character) => {
-    character.move();
+  characters.sort(function (a, b) {
+    return b.height - a.height;
   });
+
+  for (let i = 0; i < characters.length; i++) {
+    const character = characters[i];
+    character.moveTo(100 + 200 * i, 500);
+    character.move();
+  }
+
+  // characters.forEach((character) => {
+
+  // });
 
   window.requestAnimationFrame(gameLoop);
 }
@@ -42,6 +52,5 @@ for (let i = 0; i < 1; i++) {
 //     characters[i].target = true;
 //   }
 // });
-
 
 window.requestAnimationFrame(gameLoop);
