@@ -30,6 +30,12 @@ class Bean {
     this.notes.innerHTML = `<h1>Name:${this.name}</h1><p>Height:${Math.floor(
       this.height
     )}</p>`;
+    this.targetNode = document.createElement("div");
+    this.board.appendChild(this.targetNode);
+    this.targetNode.style.width = "10px";
+    this.targetNode.style.height = "10px";
+    this.targetNode.style.background = "red";
+    this.targetNode.style.position = "absolute";
   }
 
   init() {
@@ -149,5 +155,8 @@ class Bean {
     this.dom.style.left = this.x + "px";
     this.dom.style.top = this.y + "px";
     this.dom.style.zIndex = Math.floor(this.y);
+
+    this.targetNode.style.left = this.xTarget + "px";
+    this.targetNode.style.top = this.yTarget + "px";
   }
 }
