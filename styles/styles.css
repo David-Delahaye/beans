@@ -276,4 +276,18 @@ body {
 .hidden {
   display: none !important;
 }
+
+.order {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  z-index: 100000000;
+}
+
+.on {
+  background-color: green !important;
+}
 /*# sourceMappingURL=styles.css.map */
