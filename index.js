@@ -46,15 +46,15 @@ for (let i = 0; i < 1; i++) {
 }
 
 //follow mouse
-// window.addEventListener("mousemove", (e) => {
-//   // console.log(e.screenX, e.screenY);
-//   // console.log(e);
-//   for (let i = 0; i < characters.length; i++) {
-//     characters[i].xTarget = e.offsetX;
-//     characters[i].yTarget = e.offsetY;
-//     characters[i].target = true;
-//   }
-// });
+window.addEventListener("click", (e) => {
+  // console.log(e.screenX, e.screenY);
+  // console.log(e);
+  for (let i = 0; i < characters.length; i++) {
+    characters[i].xTarget = e.offsetX;
+    characters[i].yTarget = e.offsetY;
+    characters[i].target = true;
+  }
+});
 
 const order = document.querySelector(".order");
 

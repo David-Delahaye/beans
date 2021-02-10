@@ -105,8 +105,18 @@ class Bean {
       this.xTarget < this.x ? (this.xDir -= 0.1) : (this.xDir += 0.1);
       this.yTarget < this.y ? (this.yDir -= 0.1) : (this.yDir += 0.1);
 
-      if (xDiff < this.radius) this.xDir = 0;
-      if (yDiff < this.radius) this.yDir = 0;
+      if (xDiff > yDiff) {
+        console.log(yDiff / xDiff);
+        this.yDir = this.yDir * (yDiff / xDiff);
+      }
+
+      if (xDiff < yDiff) {
+        console.log(xDiff / yDiff);
+        this.xDir = this.xDir * (xDiff / yDiff);
+      }
+
+      if (xDiff < 5) this.xDir = 0;
+      if (yDiff < 5) this.yDir = 0;
       if (xDiff < this.radius && yDiff < this.radius) {
         //console.log("im here at ", this.x, this.y, this);
         //this.target = false;
