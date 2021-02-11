@@ -5,7 +5,8 @@ class Bean {
     this.name = names[Math.floor(Math.random() * 3)];
     this.height = height;
     this.width = width;
-    this.radius = width / 2;
+    this.mass = height * width;
+    this.radius = Math.min(width / 2, height / 2);
     this.x = x;
     this.y = y;
     this.xDir = 1;
@@ -27,9 +28,9 @@ class Bean {
     this.init();
     this.face = this.dom.querySelector(".face");
     this.notes = this.dom.querySelector(".notes");
-    this.notes.innerHTML = `<h1>Name:${this.name}</h1><p>Height:${Math.floor(
-      this.height
-    )}</p>`;
+    this.notes.innerHTML = `<h1>Name:${this.name}</h1>
+    <p>Height:${Math.floor(this.height)}</p>
+    <p>Mass:${Math.floor(this.mass)}</p>`;
     this.targetNode = document.createElement("div");
     this.board.appendChild(this.targetNode);
     this.targetNode.style.width = "10px";
@@ -84,8 +85,12 @@ class Bean {
         // this.xDir += 0.1;
         // this.yDir += 0.1;
 
-        characters[i].x < this.x ? (this.xDir += 0.2) : (this.xDir -= 0.2);
-        characters[i].y < this.y ? (this.yDir += 0.2) : (this.yDir -= 0.2);
+        characters[i].x < this.x
+          ? (this.xDir += 0.3 * (characters[i].mass / this.mass))
+          : (this.xDir -= 0.3 * (characters[i].mass / this.mass));
+        characters[i].y < this.y
+          ? (this.yDir += 0.3 * (characters[i].mass / this.mass))
+          : (this.yDir -= 0.3 * (characters[i].mass / this.mass));
       }
     }
   }
