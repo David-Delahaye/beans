@@ -82,8 +82,6 @@ class Bean {
       if (distance !== false) {
         const bounceXDiff = Math.abs(characters[i].x - this.x);
         const bounceYDiff = Math.abs(characters[i].y - this.y);
-        // this.xDir += 0.1;
-        // this.yDir += 0.1;
 
         characters[i].x < this.x
           ? (this.xDir += 0.3 * (characters[i].mass / this.mass))

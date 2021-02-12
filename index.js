@@ -10,7 +10,7 @@ function getDistanceBetween(x1, x2, y1, y2, r1, r2) {
 
 function gameLoop() {
   characters.sort(function (a, b) {
-    return b.height - a.height;
+    return b["height"] - a["height"];
   });
   console.log(ordered);
   if (ordered) {
